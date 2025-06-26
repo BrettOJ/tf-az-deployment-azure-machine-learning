@@ -9,8 +9,11 @@ module "avm-res-keyvault-vault" {
   public_network_access_enabled = false
   private_endpoints = {
     primary = {
-      private_dns_zone_resource_ids = [module.private_dns_zone_akc.resource_id]
-      subnet_resource_id            = module.avm-res-network-virtualnetwork.subnets["subnet1"].id
+      private_dns_zone_resource_ids = [module.private_dns_zone_akv.resource_id]
+      subnet_resource_id            = module.avm-res-network-virtualnetwork.subnets["private-endpoints"].resource_id
     }
   }
+  depends_on = [ module.avm-res-network-virtualnetwork, 
+                 module.avm-res-resources-resourcegroup, 
+                 module.private_dns_zone_akv ]
 }

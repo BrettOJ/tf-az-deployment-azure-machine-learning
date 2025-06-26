@@ -7,6 +7,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.34.0"
     }
+    azapi = {
+      source  = "Azure/azapi"
+      version = "2.4.0"
+    }
   }
 }
 
@@ -22,4 +26,10 @@ provider "azurerm" {
   }
 }
 
+provider "azapi" {
+  tenant_id           = "f3c9952d-3ea5-4539-bd9a-7e1093f8a1b6" #konjur tenant id
+  subscription_id     = "95328200-66a3-438f-9641-aeeb101e5e37"
 
+
+  
+} 

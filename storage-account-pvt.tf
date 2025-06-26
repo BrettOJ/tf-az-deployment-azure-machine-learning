@@ -4,7 +4,7 @@ module "avm_res_storage_storageaccount" {
 
   location            = local.location
   name                = replace(module.naming.storage_account.name_unique, "-", "")
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = module.avm-res-resources-resourcegroup.name
   # for idempotency
   blob_properties = {
     cors_rule = [{
@@ -42,14 +42,14 @@ module "avm_res_storage_storageaccount" {
   private_endpoints = {
     blob = {
       name                          = "pe-storage-blob"
-      subnet_resource_id            = module.virtual_network.subnets["private_endpoints"].resource_id
+      subnet_resource_id            = module.avm-res-network-virtualnetwork.subnets["private-endpoints"].resource_id
       subresource_name              = "blob"
       private_dns_zone_resource_ids = [module.private_dns_zone_blob.resource_id]
       inherit_lock                  = false
     }
     file = {
       name                          = "pe-storage-file"
-      subnet_resource_id            = module.virtual_network.subnets["private_endpoints"].resource_id
+      subnet_resource_id            =module.avm-res-network-virtualnetwork.subnets["private-endpoints"].resource_id
       subresource_name              = "file"
       private_dns_zone_resource_ids = [module.private_dns_zone_file.resource_id]
       inherit_lock                  = false
@@ -58,4 +58,8 @@ module "avm_res_storage_storageaccount" {
   public_network_access_enabled = false
   shared_access_key_enabled     = true
   tags                          = local.tags
+depends_on = [ module.avm-res-network-virtualnetwork, 
+               module.avm-res-resources-resourcegroup, 
+               module.private_dns_zone_blob, 
+               module.private_dns_zone_file ]
 }
